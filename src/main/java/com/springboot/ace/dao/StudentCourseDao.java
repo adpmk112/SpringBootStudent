@@ -22,8 +22,8 @@ public class StudentCourseDao {
 	@SuppressWarnings("unused")
 	private ResponseStudentCourseDto mapRowToStudentCourse(ResultSet row, int rowNum) throws SQLException{
 		ResponseStudentCourseDto responseStudentCourseDto = new ResponseStudentCourseDto();
-		responseStudentCourseDto.setStudentId(row.getLong("student_id"));
-		responseStudentCourseDto.setCourseId(row.getLong("course_id"));
+		responseStudentCourseDto.setStudentId(row.getInt("student_id"));
+		responseStudentCourseDto.setCourseId(row.getInt("course_id"));
 		responseStudentCourseDto.setStudentName(row.getString("student_name"));
 		responseStudentCourseDto.setBirth(row.getString("birth"));
 		responseStudentCourseDto.setGender(row.getString("gender"));

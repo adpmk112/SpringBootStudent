@@ -20,7 +20,7 @@ public class UserDao {
 	@SuppressWarnings("unused")
 	private ResponseUserDto mapRowToUser(ResultSet row, int rowNum) throws SQLException{
 		ResponseUserDto responseUserDto = new ResponseUserDto();
-		responseUserDto.setId(row.getLong("id"));
+		responseUserDto.setId(row.getInt("id"));
 		responseUserDto.setEmail(row.getString("email"));
 		responseUserDto.setPassword(row.getString("password"));
 		return responseUserDto;
@@ -57,12 +57,15 @@ public class UserDao {
 		List<ResponseUserDto> results = this.jdbcTemplate.query(sql, 
 				this::mapRowToUser,requestUserDto.getId());
 		
-		responseUserDto = results.get(0);
+		if(results.size()>0) {
+			responseUserDto = results.get(0);
+		}
 		
 		return responseUserDto;
 	}
 
 	public ResponseUserDto selectOneByEmail(RequestUserDto requestUserDto) {
+		
 		ResponseUserDto responseUserDto = new ResponseUserDto();
 		
 		String sql = "select * from user where email=?";
@@ -70,8 +73,9 @@ public class UserDao {
 		List<ResponseUserDto> results = this.jdbcTemplate.query(sql, 
 				this::mapRowToUser,requestUserDto.getEmail());
 		
-		responseUserDto = results.get(0);
-		
+		if(results.size()>0) {
+			responseUserDto = results.get(0);
+		}
 		return responseUserDto;
 	}
 

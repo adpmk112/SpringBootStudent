@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 @Service("responseCourseDto")
 public class ResponseCourseDto {
-	Long id;
+	Integer id;
 	String name;
 }

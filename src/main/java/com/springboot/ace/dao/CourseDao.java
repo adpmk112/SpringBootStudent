@@ -20,8 +20,8 @@ public class CourseDao {
 	@SuppressWarnings("unused")
 	private ResponseCourseDto mapRowToCourse(ResultSet row, int rowNum) throws SQLException{
 		ResponseCourseDto responseCourseDto = new ResponseCourseDto();
-		responseCourseDto.setId(row.getLong("id"));
-		responseCourseDto.setName(row.getString("name"));
+		responseCourseDto.setId(row.getInt("id"));
+		//responseCourseDto.setName(row.getString("name"));
 		return responseCourseDto;
 	}
 	

@@ -66,7 +66,7 @@ public class UserController {
 	
 	@GetMapping("/updateView/{updateId}")
 	public ModelAndView fetchUserToUpdate(@PathVariable("updateId") String updateId, Model model) {
-		requestUserDto.setId(Long.valueOf(updateId));
+		requestUserDto.setId(Integer.valueOf(updateId));
 		responseUserDto = userDao.selectOneById(requestUserDto);
 		model.addAttribute("fetchedUserData",responseUserDto);
 		return new ModelAndView("userUpdate","userUpdateData",new UserBean());
@@ -76,7 +76,7 @@ public class UserController {
 	public String updateUser(UserBean userBean, ModelMap model,
 												HttpSession session){
 		
-		requestUserDto.setId(Long.valueOf(userBean.getId()));
+		requestUserDto.setId(Integer.valueOf(userBean.getId()));
 		requestUserDto.setEmail(userBean.getEmail());
 		requestUserDto.setPassword(userBean.getPassword());
 		userDao.updateByUserId(requestUserDto);
@@ -85,7 +85,7 @@ public class UserController {
 	
 	@GetMapping("/delete/{deleteId}")
 	public String deleteUser(@PathVariable("deleteId")String deleteId) {
-		requestUserDto.setId(Long.valueOf(deleteId));
+		requestUserDto.setId(Integer.valueOf(deleteId));
 		userDao.deleteByUserId(requestUserDto);
 		return "redirect:userView";
 	}
@@ -94,7 +94,7 @@ public class UserController {
 	public String searchUser(UserBean userBean, ModelMap model) {
 		ResponseUserDto responseUserDto = null;
 		if(userBean.getId()!="") {
-			requestUserDto.setId(Long.valueOf(userBean.getId()));
+			requestUserDto.setId(Integer.valueOf(userBean.getId()));
 			responseUserDto = userDao.selectOneById(requestUserDto);
 			model.addAttribute("searchedUserDto", responseUserDto);
 			}

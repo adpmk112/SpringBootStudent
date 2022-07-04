@@ -1,5 +1,7 @@
 package com.springboot.ace.controller;
 
+import java.util.Date;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.springboot.ace.dto.RequestUserDto;
 import com.springboot.ace.dto.ResponseUserDto;
@@ -27,8 +30,9 @@ public class LoginController {
 	   private ResponseUserDto responseUserDto;
 	   
 	   @GetMapping("/login")
-	   public String loginView() {
-		   return "login";
+	   public ModelAndView loginView() {
+		   UserBean userBean = new UserBean();
+		   return new ModelAndView("login","userBean",userBean);
 	   }
 	   
 	   @PostMapping("/login")
@@ -39,7 +43,8 @@ public class LoginController {
 
 			if (userBean.getEmail().equals(responseUserDto.getEmail())
 					&& userBean.getPassword().equals(responseUserDto.getPassword())) {
-				session.setAttribute("userSession", responseUserDto);
+				session.setAttribute("userSession", responseUserDto.getEmail());
+				session.setAttribute("date", new Date());
 				return "menu";
 			} 
 			

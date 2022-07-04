@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 @Service("responseStudentCourseDto")
 public class ResponseStudentCourseDto {
-	private Long studentId, courseId;
+	private int studentId, courseId;
 	private String studentName, birth, gender, phone, education, courseName;
 }

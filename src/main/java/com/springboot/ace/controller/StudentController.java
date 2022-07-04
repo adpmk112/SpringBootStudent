@@ -27,7 +27,7 @@ import com.springboot.ace.model.StudentCourseBean;
 
 @Controller
 public class StudentController {
-		Long studId;
+		Integer studId;
 		@Autowired
 		private StudentDao studentDao;
 		@Autowired
@@ -68,7 +68,7 @@ public class StudentController {
 			studentDao.createStudent(requestStudentDto);
 			String[]attend = request.getParameterValues("course");
 			for(int i=0;i<attend.length;i++) {
-				requestCourseDto.setId(attend[i]);
+				requestCourseDto.setId(Integer.valueOf(attend[i]));
 				studentCourseDao.createStudent_course(requestStudentDto, requestCourseDto);
 			}
 			return "redirect:studentView";	
@@ -76,7 +76,7 @@ public class StudentController {
 		
 		@GetMapping("/deleteStudent/{deleteId}")
 		public String deleteStudent(@PathVariable("deleteId")String deleteId) {
-				requestStudentDto.setId(Long.valueOf(deleteId));
+				requestStudentDto.setId(Integer.valueOf(deleteId));
 				studentDao.deleteByStudentId(requestStudentDto);
 				return "redirect:studentView";
 		}

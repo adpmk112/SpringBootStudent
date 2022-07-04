@@ -20,12 +20,19 @@ public class StudentDao {
 	@SuppressWarnings("unused")
 	private ResponseStudentDto mapRowToStudent(ResultSet row, int rowNum) throws SQLException{
 		ResponseStudentDto responseStudentDto = new ResponseStudentDto();
-		responseStudentDto.setId(row.getLong("id"));
+		responseStudentDto.setId(row.getInt("id"));
 		responseStudentDto.setName(row.getString("name"));
 		responseStudentDto.setBirth(row.getString("birth"));
 		responseStudentDto.setGender(row.getString("gender"));
 		responseStudentDto.setPhone(row.getString("phone"));
 		responseStudentDto.setEducation(row.getString("education"));
+		return responseStudentDto;
+	}
+	
+	@SuppressWarnings("unused")
+	private ResponseStudentDto mapRowToStudentId(ResultSet row, int rowNum) throws SQLException{
+		ResponseStudentDto responseStudentDto = new ResponseStudentDto();
+		responseStudentDto.setId(row.getInt("id"));
 		return responseStudentDto;
 	}
 	
@@ -70,8 +77,9 @@ public class StudentDao {
 	    List<ResponseStudentDto> results = this.jdbcTemplate.query(sql, 
 				this::mapRowToStudent,requestStudentDto.getId());
 		
-	    responseStudentDto = results.get(0);
-	    
+	    if(results.size()>0) {
+	    	responseStudentDto = results.get(0);
+	    }
 		return responseStudentDto;
 	}
 	
@@ -95,10 +103,11 @@ public class StudentDao {
 		
 		String sql = "SELECT `id` FROM `student` ORDER BY `id` DESC LIMIT 1";
 		
-		List<ResponseStudentDto> results = this.jdbcTemplate.query(sql, this::mapRowToStudent);
+		List<ResponseStudentDto> results = this.jdbcTemplate.query(sql, this::mapRowToStudentId);
 		
-		responseStudentDto = results.get(0);
-		
+		if(results.size()>0) {
+			responseStudentDto = results.get(0);
+		}
 		return responseStudentDto;
 	}
 }

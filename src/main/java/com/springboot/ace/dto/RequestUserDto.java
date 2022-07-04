@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @Service("requestUserDto")
 public class RequestUserDto {
-		private Long id;
+		private Integer id;
 		private String email;
 		private String password;
 }

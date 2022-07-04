@@ -10,6 +10,6 @@ import lombok.Setter;
 @Service("requestStudentDto")
 public class RequestStudentDto {
 	
-	private Long id;
+	private Integer id;
 	private String name, birth, gender, phone, education;
 }

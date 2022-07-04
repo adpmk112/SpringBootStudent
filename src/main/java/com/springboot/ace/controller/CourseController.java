@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.springboot.ace.dao.CourseDao;
 import com.springboot.ace.dto.RequestCourseDto;
@@ -17,9 +18,8 @@ import com.springboot.ace.model.CourseBean;
 @Controller
 @RequestMapping("/course")
 public class CourseController {
-	
-	 Long courseId = (long) 0;
 	  
+	int courseId = 0;
 	@Autowired
 	private CourseDao courseDao;
 	@Autowired
@@ -28,18 +28,15 @@ public class CourseController {
 	private ResponseCourseDto responseCourseDto;
 	
 	@GetMapping("/view")
-	public String courseView(Model model) {
+	public ModelAndView courseView(Model model) {
+		CourseBean courseBean = new CourseBean();
 		responseCourseDto = courseDao.selectLastRow();
-		courseId = responseCourseDto.getId()+1;
-		model.addAttribute("courseId",courseId);
-		return "courseRegister";
+		courseBean.setId(responseCourseDto.getId()+1);
+		return new ModelAndView("courseRegister","courseBean",courseBean);
 	}
 	
 	@PostMapping("/add")
 	public String addCourse(CourseBean courseBean) {
-		responseCourseDto = courseDao.selectLastRow();
-		courseId = responseCourseDto.getId()+1;
-		
 		requestCourseDto.setName(courseBean.getName());
 		courseDao.createCourse(requestCourseDto);
 		return "redirect:view";

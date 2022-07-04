@@ -8,6 +8,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RequestCourseDto {
-	String id;
+	Integer id;
 	String name;
 }

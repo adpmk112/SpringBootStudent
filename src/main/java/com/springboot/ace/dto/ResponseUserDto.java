@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @Service("responseUserDto")
 public class ResponseUserDto {
-	private Long id;
+	private Integer id;
 	private String email;
 	private String password;
 }
