@@ -47,10 +47,13 @@ public class StudentController {
 		public String studentRegisterView(ModelMap model) {
 			List<ResponseCourseDto>courseList = courseDao.selectAll();
 			model.addAttribute("courseList", courseList);
+			
 			responseStudentDto = studentDao.selectLastRow();
 			studId = responseStudentDto.getId()+1;
+			StudentBean studentBean = new StudentBean();
+			studentBean.setId(studId);
 			model.addAttribute("studId", "STU-"+studId);
-			model.addAttribute("studentRegisterData",new StudentBean());
+			model.addAttribute("studentBean",studentBean);
 			return "studentRegister";
 		}
 		
@@ -66,9 +69,8 @@ public class StudentController {
 			requestStudentDto.setPhone(studentBean.getPhone());
 			requestStudentDto.setEducation(studentBean.getEducation());
 			studentDao.createStudent(requestStudentDto);
-			String[]attend = request.getParameterValues("course");
-			for(int i=0;i<attend.length;i++) {
-				requestCourseDto.setId(Integer.valueOf(attend[i]));
+			for(int i=0;i<studentBean.getAttend().length;i++) {
+				requestCourseDto.setId(Integer.valueOf(studentBean.getAttend()[i]));
 				studentCourseDao.createStudent_course(requestStudentDto, requestCourseDto);
 			}
 			return "redirect:studentView";	

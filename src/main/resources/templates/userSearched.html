@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
@@ -21,7 +20,7 @@
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
     
-        <title>Course Registration</title>
+        <title>UserSearched </title>
 </head>
 
 <body>
@@ -29,16 +28,16 @@
         <div class="container">
             <div class=row>        
                 <div class="col-md-5 ">
-            <a href="MNU001.html"><h3>Student Registration</h3></a>
+            <a href="menu.html"><h3>Student Registration</h3></a>
           
         </div>  
         <div class="col-md-6">
-           <p>User: <span th:text="${session.uid}"></span> <span th:text="${session.uname}"></span> </p>
+           <p>User: <span th:text="${session.userSession}"></span> 
            
-            <p>Current Date : <span th:text="${session.today}"></span> </p>
+            <p>Current Date : <span th:text="${session.date}"></span> </p>
         </div>  
         <div class="col-md-1" >
-            <input type="button" class="btn-basic" id="lgnout-button" value="Log Out" onclick="location.href='LogoutServlet'">
+            <input type="button" class="btn-basic" id="lgnout-button" value="Log Out" onclick="location.href='/logOut'">
         </div>        
     </div>
 </div>
@@ -46,40 +45,38 @@
 </div>
     <!-- <div id="testsidebar">Hello World </div> -->
     <div class="container">
-    <div class="sidenav">
+   <div class="sidenav">
         
         <button class="dropdown-btn" > Class Management <i class="fa fa-caret-down"></i></button>
         
             <div class="dropdown-container">
-          <a href="/course">Course Registration </a>
-          <a href="/student/add">Student Registration </a>
-          <a href="/student/display">Student Search </a>
+          <a href="/course/view">Course Registration </a>
+          <a href="/studentRegisterView">Student Registration </a>
+          <a href="/studentView">Student Search </a>
         </div>
-        <a href="/user/display">Users Management</a>
+        <a href="/user/view">Users Management</a>	        
       </div>
       <div class="main_contents">
     <div id="sub_content">
-        <form class="row g-3 mt-3 ms-2" method="GET" action="/user/search" id="searchForm">
+        <form class="row g-3 mt-3 ms-2" method="GET" action="/user/search" id="searchForm" th:object="${userBean}">
+            <div class="error" th:text="${error}"></div>
             <div class="col-auto">
                 <label for="staticEmail2" class="visually-hidden">User Id</label>
-                <input type="text" class="form-control" id="staticEmail2" placeholder="User ID" name="id">
+                <input type="text" class="form-control" id="staticEmail2" placeholder="User ID" th:field="*{id}">
             </div>
             <div class="col-auto">
                 <label for="inputPassword2" class="visually-hidden">User Name</label>
-                <input type="text" class="form-control" id="inputPassword2" placeholder="User Name" name="name">
+                <input type="text" class="form-control"  placeholder="Email" th:field="*{email}">
             </div>
     
             <div class="col-auto">
                 <button type="submit" class="btn btn-primary mb-3">Search</button>
             </div>
             <div class="col-auto">
-                <button type="button" class="btn btn-secondary " onclick="location.href = '/';">
+                <button type="button" class="btn btn-secondary " onclick="location.href = '/user/register';">
                     Add
                 </button>
     
-            </div>
-            <div class="col-auto">
-                <button type="submit" class="btn btn-danger mb-3">Reset</button>
             </div>
         </form>
     
@@ -96,28 +93,19 @@
             <tbody>
             		
             		
-            			<tr><td colspan="3"><span  th:if="${error}" th:text="${error}" style="color: red;text-align: center"></span></td></tr>
-            		
-            			
-            			
-	            	<tr th:each="user: ${users}">
-                    <td class="id" th:text="${user.getId()}"></td>
-                    <td class="name" th:text="${user.getName()}"></td>
-                    
-                <td>
-                <a th:href="@{/user/update(uid=${user.getId()})}">
-                    <button type="button" class="btn btn-success">
-                        Update
-                    </button>
-                </a>
-                </td>
-                <td>
-                	<a th:href="@{/user/delete(uid=${user.getId()})}">
-                		<button type="button" class="btn btn-secondary mb-3" data-bs-toggle="modal"
-                    data-bs-target="#exampleModal">Delete</button>
-                    </a>
-                </td>
-                </tr>
+            			<tr>
+							<td th:text="${searchedUserDto.id}" />
+							<td th:text="${searchedUserDto.email}" />
+							
+							<td><a th:href="@{/user/updateView/{updateId}(updateId = ${searchedUserDto.id})}">
+									<button type="button" class="btn btn-success">Update</button>
+							</a></td>
+							<td><a th:href="@{/user/delete/{deleteId}(deleteId = ${searchedUserDto.id})}">
+									<button type="button" class="btn btn-secondary mb-3"
+										data-bs-toggle="modal" data-bs-target="#exampleModal">
+										Delete</button>
+							</a></td>
+						</tr>
 	          
             </tbody>
         </table>

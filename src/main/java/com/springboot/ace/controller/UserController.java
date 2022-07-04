@@ -37,30 +37,30 @@ public class UserController {
 	private ResponseUserDto responseUserDto;
 	
 	@GetMapping("/view")
-	public String userView(UserBean user,Model model) {
+	public ModelAndView userView(ModelMap model) {
 		resUserDtoList = userDao.selectAll();
 		model.addAttribute("resUserDtoList", resUserDtoList);
-		return "userView";
+		return new ModelAndView("userView","userBean",new UserBean());
 	}
 	
 	@GetMapping("/register")
-	public String registerView() {
-		return "userRegister";
+	public ModelAndView registerView() {
+		return new ModelAndView("userRegister","userBean",new UserBean());
 	}
 	
 	@PostMapping("/add")
-	public String addUser(UserBean userBean, ModelMap model) {
+	public String addUser(@ModelAttribute("userBean") UserBean userBean, ModelMap model) {
 		requestUserDto.setEmail(userBean.getEmail());
 		requestUserDto.setPassword(userBean.getPassword());
 		confirmPassword = userBean.getConfirmPassword();
 		
 		if(requestUserDto.getPassword().equals(confirmPassword)) {
 			userDao.createUser(requestUserDto);
-			return "redirect:userView";
+			return "redirect:/user/view";
 		}
 		else {
 			model.addAttribute("error","Something is wrong in email and password.");
-			return "userRegister";
+			return "redirect:/user/register";
 		}
 	}
 	
@@ -69,29 +69,33 @@ public class UserController {
 		requestUserDto.setId(Integer.valueOf(updateId));
 		responseUserDto = userDao.selectOneById(requestUserDto);
 		model.addAttribute("fetchedUserData",responseUserDto);
-		return new ModelAndView("userUpdate","userUpdateData",new UserBean());
+		UserBean userBean =new UserBean();
+		userBean.setId(String.valueOf(responseUserDto.getId()));
+		userBean.setEmail(responseUserDto.getEmail());
+		userBean.setPassword(responseUserDto.getPassword());
+		return new ModelAndView("userUpdate","userBean",userBean);
 	}
 	
 	@PostMapping("/update")
-	public String updateUser(UserBean userBean, ModelMap model,
+	public String updateUser(@ModelAttribute("userBean") UserBean userBean, ModelMap model,
 												HttpSession session){
 		
 		requestUserDto.setId(Integer.valueOf(userBean.getId()));
 		requestUserDto.setEmail(userBean.getEmail());
 		requestUserDto.setPassword(userBean.getPassword());
 		userDao.updateByUserId(requestUserDto);
-		return "redirect:userView";
+		return "redirect:/user/view";
 	}
 	
 	@GetMapping("/delete/{deleteId}")
 	public String deleteUser(@PathVariable("deleteId")String deleteId) {
 		requestUserDto.setId(Integer.valueOf(deleteId));
 		userDao.deleteByUserId(requestUserDto);
-		return "redirect:userView";
+		return "redirect:/user/view";
 	}
 	
 	@GetMapping("/search")
-	public String searchUser(UserBean userBean, ModelMap model) {
+	public ModelAndView searchUser(@ModelAttribute("userBean") UserBean userBean, ModelMap model) {
 		ResponseUserDto responseUserDto = null;
 		if(userBean.getId()!="") {
 			requestUserDto.setId(Integer.valueOf(userBean.getId()));
@@ -106,8 +110,8 @@ public class UserController {
 			}
 		
 		else {
-			model.addAttribute("searchNull", "Fill the blank to search");
+			model.addAttribute("error", "Fill the blank to search");
 		}
-		return "userSearched";
+		return new ModelAndView("userSearched","userBean",userBean);
 	}
 }

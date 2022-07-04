@@ -11,7 +11,7 @@ public class StudentBean implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private Long id;
-	private String name, birth, gender, phone, education;
+	private int id;
+	private String name, birth, gender, phone, education,attend[];
 	
 }

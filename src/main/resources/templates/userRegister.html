@@ -63,7 +63,7 @@
       <div class="main_contents">
     <div id="sub_content">
         <form method="POST" action="/user/add" th:object="${userBean}">
-
+			<div class="error" th:text="${error}"></div>
             <h2 class="col-md-6 offset-md-2 mb-5 mt-4">User Registration</h2>
             
             
