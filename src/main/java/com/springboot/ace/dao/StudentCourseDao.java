@@ -3,6 +3,7 @@ package com.springboot.ace.dao;
 import java.sql.ResultSet;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ public class StudentCourseDao {
 		responseStudentCourseDto.setStudentName(row.getString("student_name"));
 		responseStudentCourseDto.setBirth(row.getString("birth"));
 		responseStudentCourseDto.setGender(row.getString("gender"));
+		responseStudentCourseDto.setPhone(row.getString("phone"));
 		responseStudentCourseDto.setEducation(row.getString("education"));
 		responseStudentCourseDto.setCourseName(row.getString("course_name"));
 		return responseStudentCourseDto;
@@ -36,8 +38,13 @@ public class StudentCourseDao {
 		String sql = "insert into student_course (student_id, course_id) values(?,?)";
 		this.jdbcTemplate.update(sql,requestStudentDto.getId(),requestCourseDto.getId());
 	}
+	
+	public void deleteStudentCourseByCourseId(RequestCourseDto requestCourseDto) {
+		String sql = "Delete from `student_course` where `course_id` = ? ";
+		this.jdbcTemplate.update(sql,requestCourseDto.getId());
+	}
 
-	public List<ResponseStudentCourseDto> selectOneByStudentId(RequestStudentCourseDto requestStudentCourseDto) {
+	public List<ResponseStudentCourseDto> selectOneById(RequestStudentCourseDto requestStudentCourseDto) {
 		String sql = "select s.`id` AS `student_id`, s.`name` AS `student_name`, s.`birth`, s.`gender`, "
 				+ "s.`phone`, s.`education`, c.`id` AS `course_id`, c.`name` AS `course_name` from `student` "
 				+ "s join `student_course` sc join `course` c on s.`id`=sc.`student_id` and c.id=sc.`course_id` "
@@ -47,7 +54,12 @@ public class StudentCourseDao {
 				this::mapRowToStudentCourse,
 				requestStudentCourseDto.getStudentId());
 		
-		return results;
+		List<ResponseStudentCourseDto> responseStudentCourseDtoList = new ArrayList<>();
+		
+		if(results.size()>0) {
+			responseStudentCourseDtoList = results;
+		}
+		return responseStudentCourseDtoList;
 	}
 
 	public List<ResponseStudentCourseDto> selectAllStudentwithCourseName() {

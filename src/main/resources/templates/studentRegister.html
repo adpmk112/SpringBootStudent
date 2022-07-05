@@ -31,7 +31,7 @@
         <div class="container">
             <div class=row>        
                 <div class="col-md-5 ">
-            <a href="menu.html"><h3>Student Registration</h3></a>
+            <a href="/menu"><h3>Student Registration</h3></a>
         </div>  
         <div class="col-md-6">
             <p>User: <span th:text="${session.userSession}"></span> 
@@ -131,7 +131,7 @@
 						<legend class="col-form-label col-md-2 pt-0">Attend</legend>
 						
 				<div class="col-md-6 offset-md-4 ms-4">
-				<div th:each="data: ${courseList}">
+				<div th:each="data: ${courseList}" style="display:inline" >
 				<div class="form-check-inline col-md-2">
 					<input class="form-check-input" type="checkbox" th:field="*{attend}"  th:value="${data.id}" > 
 					<span th:text="${data.name}"></span>
@@ -151,10 +151,6 @@
                 <div class="col-md-4"></div>
     
                 <div class="col-md-4">
-                    <button type="button" class="btn btn-danger ">
-    
-                        Reset
-                    </button>
                     <button type="submit" class="btn btn-secondary col-md-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         Add
                     </button>

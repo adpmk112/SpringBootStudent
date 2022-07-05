@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class StudentCourseBean {
-		private Long studentId, courseId;
+		private int studentId, courseId;
 		private String studentName, birth, gender, phone, education, courseName;
 }

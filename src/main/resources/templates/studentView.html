@@ -29,15 +29,15 @@
     <div class="container">
         <div class=row>        
             <div class="col-md-5 ">
-        <a href="MNU001.html"><h3>Student Registration</h3></a>
+        <a href="/menu"><h3>Student Registration</h3></a>
     </div>  
     <div class="col-md-6">
-        <p>User: <span th:text="${session.uid}"></span> <span th:text="${session.uname}"></span> </p>
+        <p>User: <span th:text="${session.userSession}"></span> 
            
-            <p>Current Date : <span th:text="${session.today}"></span> </p>
+            <p>Current Date : <span th:text="${session.date}"></span> </p>
     </div>  
     <div class="col-md-1" >
-        <input type="button" class="btn-basic" id="lgnout-button" value="Log Out" onclick="location.href='/'">
+        <input type="button" class="btn-basic" id="lgnout-button" value="Log Out" onclick="location.href='/logOut'">
     </div>        
 </div>
 </div>
@@ -50,39 +50,35 @@
         <button class="dropdown-btn" > Class Management <i class="fa fa-caret-down"></i></button>
         
             <div class="dropdown-container">
-          <a href="/course">Course Registration </a>
-          <a href="/student/add">Student Registration </a>
-          <a href="/student/display">Student Search </a>
+          <a href="/course/view">Course Registration </a>
+          <a href="/studentRegisterView">Student Registration </a>
+          <a href="/studentView">Student Search </a>
         </div>
-        <a href="/user/display">Users Management</a>
+        <a href="/user/view">Users Management</a>
       </div>
       <div class="main_contents">
     <div id="sub_content">
-      <form class="row g-3 mt-3 ms-2" action="/student/search">
+      <form class="row g-3 mt-3 ms-2" action="/searchStudentId">
         <div class="col-auto">
           <label for="staticEmail2" class="visually-hidden">studentID</label>
-          <input type="text"  class="form-control" id="staticEmail2" name="sid" placeholder="Student ID">
+          <input type="text"  class="form-control" name="studentId" placeholder="Student ID">
         </div>
         <div class="col-auto">
           <label for="inputPassword2" class="visually-hidden">studentName</label>
-          <input type="text" class="form-control" id="inputPassword2" name="sname" placeholder="Student Name">
+          <input type="text" class="form-control" name="studentName" placeholder="Student Name" disabled>
         </div>
         <div class="col-auto">
             <label for="inputPassword2" class="visually-hidden">Course</label>
-            <input type="text" class="form-control" id="inputPassword2" name="course" placeholder="Course">
+            <input type="text" class="form-control" name="studentCourse" placeholder="Course" disabled>
           </div>
         <div class="col-auto">
           <button type="submit" class="btn btn-success mb-3">Search</button>
-        </div>
-        <div class="col-auto">
-          <button type="submit" class="btn btn-secondary mb-3">Reset</button>
         </div>
       </form>
 <div>
       <table class="table table-striped" id="stduentTable">
         <thead>
           <tr>
-            <th scope="col">#</th>
             <th scope="col">Student ID</th>
             <th scope="col">Name</th>
             <th scope="col">Course Name</th>
@@ -90,21 +86,14 @@
           </tr>
         </thead>
         <tbody>
-        		
-        			<tr><td colspan="3"><span  th:if="${error}" th:text="${error}" style="color: red;text-align: center"></span></td></tr>
-	          <tr th:each="student: ${students}" th:with="count=${counter.getCount()}">
-	            <th th:text="${count}" th:with="count=${counter.increment()}"></th>
-	            <td th:text="${student.getStdId()}"></td>
-	            <td th:text="${student.getStdName()}"></td>
-	            <td>
-	            	<span th:each="course: ${student.getStdAttend()}" th:unless="${course == null}" th:text="${course} + ' '"></span>
-	            </td>
-	            <td>
-	              <a th:href="@{/student/update(sid=${student.getStdId()})}"><button type="button" class="btn btn-secondary mb-2">See More</button></a> 
-	            </td>
-	          </tr>
-         
-        	
+          <tr th:each="data: ${studWithCourse}">
+            <td th:text="${data.studentId}" />
+            <td th:text="${data.studentName}"/>
+            <td th:text="${data.courseName}"/>
+             <td>
+              <a th:href="@{/fetchStudentView/{fetchId}(fetchId = ${data.studentId})}"><button type="button" class="btn btn-secondary mb-2">See More</button></a> 
+            </td>          
+          </tr>
         </tbody>
       </table>
     </div>

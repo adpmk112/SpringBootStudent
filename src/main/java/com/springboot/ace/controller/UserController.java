@@ -77,8 +77,7 @@ public class UserController {
 	}
 	
 	@PostMapping("/update")
-	public String updateUser(@ModelAttribute("userBean") UserBean userBean, ModelMap model,
-												HttpSession session){
+	public String updateUser(@ModelAttribute("userBean") UserBean userBean, ModelMap model){
 		
 		requestUserDto.setId(Integer.valueOf(userBean.getId()));
 		requestUserDto.setEmail(userBean.getEmail());
